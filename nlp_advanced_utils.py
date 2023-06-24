@@ -5,8 +5,8 @@ import pandas as pd
 
 def load_model():
     # WORD_2_VEC_PATH = 'word2vec-google-news-300'
-    # GLOVE_PATH = 'glove-twitter-200'
-    GLOVE_PATH = 'glove-twitter-25'
+    GLOVE_PATH = 'glove-twitter-200'
+    # GLOVE_PATH = 'glove-twitter-25'
     glove = downloader.load(GLOVE_PATH)
     return glove
 

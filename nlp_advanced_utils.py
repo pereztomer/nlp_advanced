@@ -49,7 +49,7 @@ def create_embeddings(csv_path):
         current_story = row['preprocessed_text']
         sen_embedding = embed_avg(model=glove_model, sen=current_story)
         df.at[index, 'glove_embeddings'] = sen_embedding
-        if index == 10:
-            break
+        # if index == 10:
+        #     break
 
     df.to_csv('data_team4_embeddings.csv.csv')

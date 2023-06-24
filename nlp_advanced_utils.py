@@ -1,0 +1,36 @@
+import numpy as np
+from gensim import downloader
+import pandas as pd
+
+
+def load_model():
+    # WORD_2_VEC_PATH = 'word2vec-google-news-300'
+    GLOVE_PATH = 'glove-twitter-200'
+    glove = downloader.load(GLOVE_PATH)
+    return glove
+
+
+def embed(model, sen):
+    representation = []
+    for word in sen:
+        word = word.lower()
+        if word not in model.key_to_index:
+            print(f"The word: [{word}] is not an existing word in the model")
+            vec = np.zeros(200)
+        else:
+            vec = model[word]
+        representation = representation + list(vec)
+    representation = np.asarray(representation)
+    return representation
+
+
+def create_embeddings(csv_path):
+    glove_model = load_model()
+    df = pd.read_csv(csv_path)
+    df['glove_embeddings'] = None
+    for index, row in df.iterrows():
+        current_story = row['preprocessed_text']
+        sen_embedding = embed(model=glove_model, sen=current_story)
+        df.at[index, 'glove_embeddings'] = sen_embedding
+
+

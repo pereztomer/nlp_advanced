@@ -33,4 +33,7 @@ def create_embeddings(csv_path):
         sen_embedding = embed(model=glove_model, sen=current_story)
         df.at[index, 'glove_embeddings'] = sen_embedding
 
+    df.to_csv('data_team4_embeddings')
+
+
 

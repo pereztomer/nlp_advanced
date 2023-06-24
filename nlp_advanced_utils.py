@@ -33,10 +33,10 @@ def embed_avg(model, sen):
             print(f"The word: [{word}] is not an existing word in the model")
         else:
             vec = model[word]
-            representation = representation.append(list(vec))
+            representation.append(list(vec))
 
     representation = np.asarray(representation)
-    representation = np.average(representation, axis=1)
+    representation = np.average(representation, axis=0)
 
     return representation
 

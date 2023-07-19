@@ -4,7 +4,7 @@ from nlp_advanced_utils import create_embeddings
 
 
 def main():
-    csv_path = 'data_team4 - emberassing400.csv'
+    csv_path = 'embrassing_400_by_annotators.csv'
     create_embeddings(csv_path)
 
 

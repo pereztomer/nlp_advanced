@@ -4,6 +4,7 @@ import pandas as pd
 import ast
 import json
 import torch
+import math
 
 
 def load_model():
@@ -71,7 +72,7 @@ def create_embeddings(csv_path):
         sample_dict['glove_embeddings'] = sen_embedding
         samples.append(sample_dict)
 
-    with open("data.json", "w") as outfile:
+    with open("data_embedded.json", "w") as outfile:
         outfile.write(json.dumps(samples, indent=4))
 
 
@@ -79,9 +80,17 @@ from torch.utils.data import DataLoader, Dataset
 
 
 class CustomDatasetAug(Dataset):
-    def __init__(self, json_path, seq_len):
+    def __init__(self, json_path, seq_len, annotator):
         self.seq_len = seq_len
         self.data = json.load(open(json_path))
+        self.annotator = annotator
+        indexes_to_remove = []
+        for index in range(len(self.data)):
+            sample = self.data[index]
+            if math.isnan(sample[annotator]):
+                indexes_to_remove.append(index)
+
+        self.data = [value for i, value in enumerate(self.data) if i not in indexes_to_remove]
 
     def __len__(self):
         return len(self.data)
@@ -95,7 +104,7 @@ class CustomDatasetAug(Dataset):
         elif embeddings.shape[0] > self.seq_len:
             embeddings = embeddings[:self.seq_len]
         label = np.zeros(4)
-        label[sample['label'] - 1] = 1  # assumiong labels from 0,1,2,3
+        label[int(sample[self.annotator] - 1)] = 1  # assumiong labels from 0,1,2,3
         label = label.astype(np.float32)
         return embeddings.astype(np.float32), label
 

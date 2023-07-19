@@ -71,11 +71,11 @@ def plot_graph(train_loss, val_loss, graph_type):
 def main():
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print('Using device:', device)
-    json_path = 'data.json'
+    json_path = 'data_embedded.json'
     epochs = 100
     lr = 0.001
     model = BasicLstm(embedding_dim=200)
-    ds = DataLoader(CustomDatasetAug(json_path=json_path, seq_len=400),
+    ds = DataLoader(CustomDatasetAug(json_path=json_path, seq_len=400, annotator='Tomer'),
                     batch_size=10,
                     shuffle=True)
     loss_func = nn.CrossEntropyLoss()
